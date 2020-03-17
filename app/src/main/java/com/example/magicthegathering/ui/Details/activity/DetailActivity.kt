@@ -1,4 +1,4 @@
-package com.example.magicthegathering.UI.Details.Activity
+package com.example.magicthegathering.ui.Details.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

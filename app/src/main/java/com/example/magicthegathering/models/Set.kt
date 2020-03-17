@@ -1,4 +1,4 @@
-package com.example.magicthegathering.Models
+package com.example.magicthegathering.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

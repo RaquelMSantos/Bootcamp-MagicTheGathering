@@ -1,4 +1,4 @@
-package com.example.magicthegathering.Repository.Remote
+package com.example.magicthegathering.data
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -6,26 +6,26 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetrofitService {
+object RetrofitService {
 
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(20, TimeUnit.SECONDS)
-        .readTimeout(20, TimeUnit.SECONDS)
-        .writeTimeout(20, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
         .addInterceptor(logging)
         .build()
 
     private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.magicthegathering.io/v1/")
+        .baseUrl("https://api.magicthegathering.io/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
 
-    public fun <S> createService(serviceClass: Class<S>): S {
+    fun <S> createService(serviceClass: Class<S>): S {
         return retrofit.create(serviceClass)
     }
 }
