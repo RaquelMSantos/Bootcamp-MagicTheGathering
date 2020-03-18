@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.magicthegathering.R
 import com.example.magicthegathering.ui.home.adapter.HomeAdapter
-import com.example.magicthegathering.viewmodel.CardViewModel
+import com.example.magicthegathering.ui.home.viewmodel.HomeViewModel
+import com.example.magicthegathering.ui.home.viewmodel.HomeViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeAdapter: HomeAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
-    private lateinit var cardViewModel: CardViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,16 +31,29 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        cardViewModel = ViewModelProviders.of(this).get(CardViewModel::class.java)
-        cardViewModel.homePagedList?.observe(viewLifecycleOwner, Observer {  cardList ->
-            homeAdapter.submitList(cardList)
+        val viewModelFactory = HomeViewModelFactory()
+        progressBar(true)
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(HomeViewModel::class.java)
+        homeViewModel.getCards()
+        homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
+            gridLayoutManager = GridLayoutManager(this.context, 3)
+            if (it != null) {
+                progressBar(false)
+                homeAdapter = HomeAdapter(it)
+                rv_home.apply {
+                    layoutManager = gridLayoutManager
+                    adapter = homeAdapter
+                }
+            }
         })
+    }
 
-        gridLayoutManager = GridLayoutManager(this.context, 3)
-        homeAdapter = HomeAdapter()
-        rv_home.apply {
-            layoutManager = gridLayoutManager
-            adapter = homeAdapter
+    private fun progressBar(status: Boolean) {
+        if(status) {
+            pb_home.visibility = View.VISIBLE
+        }else {
+            pb_home.visibility = View.GONE
         }
     }
 

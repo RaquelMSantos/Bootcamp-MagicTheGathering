@@ -19,12 +19,4 @@ class MainActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         bottomNav.setupWithNavController(navController)
     }
-
-//    fun progressBar(status: Boolean) {
-//        if(status) {
-//            pb_home.visibility = View.VISIBLE
-//        }else {
-//            pb_home.visibility = View.GONE
-//        }
-//    }
 }

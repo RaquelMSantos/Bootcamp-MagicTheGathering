@@ -2,15 +2,14 @@ package com.example.magicthegathering.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.magicthegathering.R
-import com.example.magicthegathering.models.Card
+import com.example.magicthegathering.network.models.Card
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_card.view.*
 
-class HomeAdapter: PagedListAdapter<Card, HomeAdapter.ViewHolder> (diffCallback){
+class HomeAdapter(private val listCards: MutableList<Card>)
+    : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -18,21 +17,11 @@ class HomeAdapter: PagedListAdapter<Card, HomeAdapter.ViewHolder> (diffCallback)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val card = getItem(position)
-        if (card != null) {
-            holder.bind(card)
-        }
+        val card = listCards[position]
+        holder.bind(card)
     }
 
-    companion object {
-        private val diffCallback = object: DiffUtil.ItemCallback<Card>(){
-            override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Card, newItem: Card): Boolean =
-                oldItem.equals(newItem)
-            }
-        }
+    override fun getItemCount(): Int = listCards.size
 
     class ViewHolder (inflater: LayoutInflater, parent: ViewGroup):
         RecyclerView.ViewHolder(inflater.inflate(R.layout.item_card, parent, false)){
