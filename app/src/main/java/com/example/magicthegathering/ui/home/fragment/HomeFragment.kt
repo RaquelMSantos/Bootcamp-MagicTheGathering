@@ -1,5 +1,6 @@
 package com.example.magicthegathering.ui.home.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,17 +11,23 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.magicthegathering.R
+import com.example.magicthegathering.network.models.Card
+import com.example.magicthegathering.ui.details.activity.DetailActivity
 import com.example.magicthegathering.ui.home.adapter.HomeAdapter
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModel
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModelFactory
+import com.example.magicthegathering.utils.CardOnClickListener
+import com.example.magicthegathering.utils.Constants
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.util.ArrayList
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CardOnClickListener{
 
     private lateinit var homeAdapter: HomeAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var homeViewModel: HomeViewModel
-    private var nameSet = ""
+    private var cardArrayList = ArrayList<Card>()
+    private val constants =  Constants()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +49,8 @@ class HomeFragment : Fragment() {
             gridLayoutManager = GridLayoutManager(this.context, 3)
             if (it != null) {
                 progressBar(false)
-                homeAdapter = HomeAdapter(it)
-                nameSet = it.get(0).name
+                homeAdapter = HomeAdapter(it, this@HomeFragment)
+                cardArrayList = it as ArrayList<Card>
                 titleSet(true)
                 rv_home.apply {
                     layoutManager = gridLayoutManager
@@ -64,10 +71,21 @@ class HomeFragment : Fragment() {
     private fun titleSet(status: Boolean){
         if (status) {
             tv_name_set_frag.visibility = View.VISIBLE
-            tv_name_set_frag.text = nameSet
+            tv_name_set_frag.text = cardArrayList.get(0).name
         }else {
             tv_name_set_frag.visibility = View.INVISIBLE
         }
     }
 
+    override fun onClick(position: Int) {
+        val intent = Intent(this.context, DetailActivity::class.java)
+        val card = cardArrayList[position]
+        var imageUrl = card.imageUrl
+        intent.putExtra(constants.nameCard, card.name)
+        if (imageUrl.isNullOrBlank()) {
+           imageUrl = ""
+        }
+        intent.putExtra(constants.imageCard, imageUrl)
+        startActivity(intent)
+    }
 }
