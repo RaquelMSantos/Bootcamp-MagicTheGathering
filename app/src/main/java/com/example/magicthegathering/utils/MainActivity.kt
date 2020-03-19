@@ -1,5 +1,6 @@
 package com.example.magicthegathering.utils
 
+import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -19,12 +20,4 @@ class MainActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         bottomNav.setupWithNavController(navController)
     }
-
-//    fun progressBar(status: Boolean) {
-//        if(status) {
-//            pb_home.visibility = View.VISIBLE
-//        }else {
-//            pb_home.visibility = View.GONE
-//        }
-//    }
 }

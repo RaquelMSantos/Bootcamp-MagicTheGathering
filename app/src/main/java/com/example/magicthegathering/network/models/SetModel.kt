@@ -1,10 +1,9 @@
-package com.example.magicthegathering.models
+package com.example.magicthegathering.network.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Set {
-
+class SetModel {
     @SerializedName("code")
     @Expose
     var code: String?= null

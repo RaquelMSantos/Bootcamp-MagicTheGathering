@@ -1,8 +1,8 @@
-package com.example.magicthegathering.models
+package com.example.magicthegathering.network.models
 
 import com.google.gson.annotations.SerializedName
 
-data class CardListCallback (
+data class CardResponse (
     @SerializedName("cards")
     val listCard: List<Card>
 )

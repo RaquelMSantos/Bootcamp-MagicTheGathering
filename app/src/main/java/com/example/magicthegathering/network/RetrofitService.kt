@@ -1,5 +1,6 @@
-package com.example.magicthegathering.data
+package com.example.magicthegathering.network
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,13 +20,16 @@ object RetrofitService {
         .addInterceptor(logging)
         .build()
 
-    private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.magicthegathering.io/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
-        .build()
+    private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.magicthegathering.io/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .client(client)
+            .build()
+    }
 
     fun <S> createService(serviceClass: Class<S>): S {
-        return retrofit.create(serviceClass)
+        return getRetrofit().create(serviceClass)
     }
 }
