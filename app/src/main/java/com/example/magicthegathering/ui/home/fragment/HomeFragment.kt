@@ -71,7 +71,7 @@ class HomeFragment : Fragment(), CardOnClickListener{
     private fun titleSet(status: Boolean){
         if (status) {
             tv_name_set_frag.visibility = View.VISIBLE
-            tv_name_set_frag.text = cardArrayList.get(0).name
+            tv_name_set_frag.text = cardArrayList.get(0).setName
         }else {
             tv_name_set_frag.visibility = View.INVISIBLE
         }

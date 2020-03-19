@@ -22,10 +22,10 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        var nameCard = intent.getStringExtra(constants.nameCard)
+        val nameCard = intent.getStringExtra(constants.nameCard)
         var imageUrl = intent.getStringExtra(constants.imageCard)
 
-        if (imageUrl.isBlank()) {
+        if (imageUrl == "") {
             imageUrl = null
         }
 
