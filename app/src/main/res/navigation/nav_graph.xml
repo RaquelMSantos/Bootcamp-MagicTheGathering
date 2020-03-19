@@ -17,17 +17,17 @@
             app:argType="string"/>
     </fragment>
 
-    <fragment android:id="@+id/favorites_bottom"
-        android:name="com.example.magicthegathering.ui.favorites.fragment.FavoritesFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites">
-        <action
-            android:id="@+id/action_bottom_favorites_to_detailsActivity"
-            app:destination="@+id/detailsActivity"/>
-        <argument
-            android:name="data"
-            app:argType="string"/>
-    </fragment>
+<!--    <fragment android:id="@+id/favorites_bottom"-->
+<!--        android:name="com.example.magicthegathering.ui.favorites.fragment.FavoritesFragment"-->
+<!--        android:label="fragment_favorites"-->
+<!--        tools:layout="@layout/fragment_favorites">-->
+<!--        <action-->
+<!--            android:id="@+id/action_bottom_favorites_to_detailsActivity"-->
+<!--            app:destination="@+id/detailsActivity"/>-->
+<!--        <argument-->
+<!--            android:name="data"-->
+<!--            app:argType="string"/>-->
+<!--    </fragment>-->
 
     <activity
         android:id="@+id/detailsActivity"

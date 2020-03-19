@@ -20,6 +20,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeAdapter: HomeAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var homeViewModel: HomeViewModel
+    private var nameSet = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +34,7 @@ class HomeFragment : Fragment() {
 
         val viewModelFactory = HomeViewModelFactory()
         progressBar(true)
+        titleSet(false)
         homeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(HomeViewModel::class.java)
         homeViewModel.getCards()
@@ -41,6 +43,8 @@ class HomeFragment : Fragment() {
             if (it != null) {
                 progressBar(false)
                 homeAdapter = HomeAdapter(it)
+                nameSet = it.get(0).name
+                titleSet(true)
                 rv_home.apply {
                     layoutManager = gridLayoutManager
                     adapter = homeAdapter
@@ -54,6 +58,15 @@ class HomeFragment : Fragment() {
             pb_home.visibility = View.VISIBLE
         }else {
             pb_home.visibility = View.GONE
+        }
+    }
+
+    private fun titleSet(status: Boolean){
+        if (status) {
+            tv_name_set_frag.visibility = View.VISIBLE
+            tv_name_set_frag.text = nameSet
+        }else {
+            tv_name_set_frag.visibility = View.INVISIBLE
         }
     }
 
