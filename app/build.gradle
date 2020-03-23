@@ -43,6 +43,7 @@ dependencies {
     def appcompat_version = "1.1.0"
     def material_version = "1.1.0"
     def legacy_version = "1.0.0"
+    def test_version = "1.2.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -54,6 +55,9 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "androidx.test:runner:$test_version"
+    androidTestImplementation "androidx.test:rules:$test_version"
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"

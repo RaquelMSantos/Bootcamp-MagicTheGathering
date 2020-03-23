@@ -21,7 +21,7 @@ class DetailActivity : AppCompatActivity() {
         val nameCard = intent.getStringExtra(constants.nameCard)
         var imageUrl = intent.getStringExtra(constants.imageCard)
 
-        if (imageUrl.isBlank()) {
+        if (imageUrl == "") {
             imageUrl = null
         }
 
