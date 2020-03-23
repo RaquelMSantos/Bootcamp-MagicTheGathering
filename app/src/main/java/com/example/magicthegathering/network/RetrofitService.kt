@@ -1,5 +1,6 @@
 package com.example.magicthegathering.network
 
+import com.example.magicthegathering.BuildConfig
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,8 +11,23 @@ import java.util.concurrent.TimeUnit
 object RetrofitService {
 
     private val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+        if (BuildConfig.DEBUG) {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
     }
+
+//    TODO - log enabled only for build debug
+//    private fun loggingFun() : HttpLoggingInterceptor {
+//        var logging = HttpLoggingInterceptor()
+//
+//        if (BuildConfig.DEBUG) {
+//            logging = HttpLoggingInterceptor().apply {
+//                level = HttpLoggingInterceptor.Level.BODY
+//            }
+//        }
+//
+//        return logging
+//    }
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)

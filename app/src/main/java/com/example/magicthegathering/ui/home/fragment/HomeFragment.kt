@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.magicthegathering.R
+import com.example.magicthegathering.network.models.Card
 import com.example.magicthegathering.ui.home.adapter.HomeAdapter
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModel
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModelFactory
@@ -32,25 +33,40 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupViews(progressBar = true, titleSet = false)
+        initViewModel()
+        observerViewModel()
+    }
+
+    private fun observerViewModel (){
+        homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                setupViews(progressBar = false, titleSet = true)
+                nameSet = it.get(0).name
+                loadRecyclerView(it)
+            }
+        })
+    }
+
+    private fun initViewModel() {
         val viewModelFactory = HomeViewModelFactory()
-        progressBar(true)
-        titleSet(false)
         homeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(HomeViewModel::class.java)
         homeViewModel.getCards()
-        homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
-            gridLayoutManager = GridLayoutManager(this.context, 3)
-            if (it != null) {
-                progressBar(false)
-                homeAdapter = HomeAdapter(it)
-                nameSet = it.get(0).name
-                titleSet(true)
-                rv_home.apply {
-                    layoutManager = gridLayoutManager
-                    adapter = homeAdapter
-                }
-            }
-        })
+    }
+
+    private fun setupViews(progressBar: Boolean, titleSet: Boolean) {
+        progressBar(progressBar)
+        titleSet(titleSet)
+    }
+
+    private fun loadRecyclerView(it: MutableList<Card>) {
+        gridLayoutManager = GridLayoutManager(this.context, 3)
+        homeAdapter = HomeAdapter(it)
+        rv_home.apply {
+            layoutManager = gridLayoutManager
+            adapter = homeAdapter
+        }
     }
 
     private fun progressBar(status: Boolean) {
