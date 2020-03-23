@@ -34,6 +34,7 @@ class HomeAdapter(private val listCards: MutableList<Card>, private val onClick:
         private var mCardImageView = itemView.img_card
 
         fun bind(card: Card) {
+            //TODO - isolate the image lib in an extension, as a wrapper
             Picasso.get()
                 .load(card.imageUrl)
                 .placeholder(R.drawable.ic_launcher_background)

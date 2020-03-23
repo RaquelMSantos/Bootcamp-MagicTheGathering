@@ -39,25 +39,40 @@ class HomeFragment : Fragment(), CardOnClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupViews(progressBar = true, titleSet = false)
+        initViewModel()
+        observerViewModel()
+    }
+
+    private fun observerViewModel (){
+        homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                setupViews(progressBar = false, titleSet = true)
+                cardArrayList = it as ArrayList<Card>
+                loadRecyclerView(cardArrayList)
+            }
+        })
+    }
+
+    private fun initViewModel() {
         val viewModelFactory = HomeViewModelFactory()
-        progressBar(true)
-        titleSet(false)
         homeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(HomeViewModel::class.java)
         homeViewModel.getCards()
-        homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
-            gridLayoutManager = GridLayoutManager(this.context, 3)
-            if (it != null) {
-                progressBar(false)
-                homeAdapter = HomeAdapter(it, this@HomeFragment)
-                cardArrayList = it as ArrayList<Card>
-                titleSet(true)
-                rv_home.apply {
-                    layoutManager = gridLayoutManager
-                    adapter = homeAdapter
-                }
-            }
-        })
+    }
+
+    private fun setupViews(progressBar: Boolean, titleSet: Boolean) {
+        progressBar(progressBar)
+        titleSet(titleSet)
+    }
+
+    private fun loadRecyclerView(it: MutableList<Card>) {
+        gridLayoutManager = GridLayoutManager(this.context, 3)
+        homeAdapter = HomeAdapter(it, this@HomeFragment)
+        rv_home.apply {
+            layoutManager = gridLayoutManager
+            adapter = homeAdapter
+        }
     }
 
     private fun progressBar(status: Boolean) {

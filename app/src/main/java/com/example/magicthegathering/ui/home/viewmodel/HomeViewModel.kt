@@ -19,7 +19,7 @@ class HomeViewModel: ViewModel() {
     val homeLiveData = MutableLiveData<MutableList<Card>>()
     fun getCards() {
         scope.launch {
-            val sets = cardRepository.getSets()?.sortedByDescending { it.date }
+            val sets = cardRepository.getSets()?.sortedByDescending { it.releaseDate }
             val card = cardRepository.getCards(sets?.get(0)?.code.toString())
             homeLiveData.postValue(card)
         }
