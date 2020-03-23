@@ -1,15 +1,11 @@
 package com.example.magicthegathering.ui.details.activity
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.magicthegathering.R
-import com.example.magicthegathering.network.models.Card
 import com.example.magicthegathering.utils.Constants
-import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
-
 
 class DetailActivity : AppCompatActivity() {
 
@@ -22,7 +18,7 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        var nameCard = intent.getStringExtra(constants.nameCard)
+        val nameCard = intent.getStringExtra(constants.nameCard)
         var imageUrl = intent.getStringExtra(constants.imageCard)
 
         if (imageUrl.isBlank()) {
