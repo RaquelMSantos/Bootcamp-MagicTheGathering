@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.magicthegathering.R
 import com.example.magicthegathering.network.models.Card
+import com.example.magicthegathering.utils.CardOnClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_card.view.*
 
-class HomeAdapter(private val listCards: MutableList<Card>)
+class HomeAdapter(private val listCards: MutableList<Card>, private val onClick: CardOnClickListener)
     : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,6 +20,10 @@ class HomeAdapter(private val listCards: MutableList<Card>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val card = listCards[position]
         holder.bind(card)
+
+        holder.itemView.setOnClickListener {
+            onClick.onClick(position)
+        }
     }
 
     override fun getItemCount(): Int = listCards.size

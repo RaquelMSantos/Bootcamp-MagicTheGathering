@@ -31,7 +31,7 @@
 
     <activity
         android:id="@+id/detailsActivity"
-        android:name="com.example.magicthegathering.ui.Details.activity.DetailActivity"
+        android:name="com.example.magicthegathering.ui.details.activity.DetailActivity"
         android:label="activity_details"
         tools:layout="@layout/activity_detail"/>
 </navigation>
