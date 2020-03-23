@@ -13,6 +13,7 @@ interface MagicApi {
     fun getSetsAsync(): Deferred<Response<SetResponse>>
 
     @GET("/v1/cards")
-    fun getCardsAsync(@Query("set") set: String): Deferred<Response<CardResponse>>
+    fun getCardsAsync(@Query("set") set: String, @Query("page") page: Int)
+            : Deferred<Response<CardResponse>>
 
 }

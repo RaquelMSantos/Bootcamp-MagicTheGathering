@@ -8,6 +8,7 @@ import com.example.magicthegathering.network.models.Card
 import com.example.magicthegathering.repository.remote.CardRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.ceil
 
 class HomeViewModel: ViewModel() {
 
@@ -15,15 +16,29 @@ class HomeViewModel: ViewModel() {
     private val coroutineContext: CoroutineContext get() = parentJob + Dispatchers.Default
     private val scope = CoroutineScope(coroutineContext)
     private val cardRepository: CardRepository = CardRepository(RetrofitService.createService(MagicApi::class.java))
+    private var card = ArrayList<Card>()
 
     val homeLiveData = MutableLiveData<MutableList<Card>>()
     fun getCards() {
         scope.launch {
-            val sets = cardRepository.getSets()?.sortedByDescending { it.releaseDate }
-            val card = cardRepository.getCards(sets?.get(0)?.code.toString())
-            homeLiveData.postValue(card)
+                val sets = cardRepository.getSets()?.sortedByDescending { it.releaseDate }
+                val header = cardRepository.getHeader(sets?.get(0)?.code.toString(), 1)
+                val totalPage = calculateTotalPage(header)
+
+                for (page in 0 until totalPage+1) {
+                    val response = cardRepository.getCards(sets?.get(0)?.code.toString(), page)
+                    card.addAll(response!!)
+                }
+                card.sortBy { it.name }
+                homeLiveData.postValue(card)
         }
     }
+
+    private fun calculateTotalPage(header: String): Int {
+        return ceil(header.toDouble().div(100)).toInt()
+    }
+
+
 
     fun cancelRequest() = coroutineContext.cancel()
 }

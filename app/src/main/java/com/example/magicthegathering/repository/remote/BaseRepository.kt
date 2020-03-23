@@ -5,7 +5,6 @@ import com.example.magicthegathering.network.Output
 import retrofit2.Response
 import java.io.IOException
 
-
 open class BaseRepository {
 
     suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, error: String): T? {
@@ -19,6 +18,10 @@ open class BaseRepository {
             return output
     }
 
+    //TODO - handle the error case
+    suspend fun safeApiCallHeader(call: suspend() -> String, error: String): String {
+        return call.invoke()
+    }
 
     private suspend fun<T : Any> apiOutput(call: suspend()-> Response<T> , error: String) : Output<T> {
         val response = call.invoke()
@@ -27,4 +30,5 @@ open class BaseRepository {
         else
             Output.Error(IOException("OOps .. Something went wrong due to  $error"))
     }
+
 }
