@@ -9,25 +9,32 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.example.magicthegathering.R
 import com.example.magicthegathering.network.models.Card
 import com.example.magicthegathering.ui.details.activity.DetailActivity
+import com.example.magicthegathering.ui.home.adapter.CardAdapter
 import com.example.magicthegathering.ui.home.adapter.HomeAdapter
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModel
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModelFactory
 import com.example.magicthegathering.utils.CardOnClickListener
+import com.example.magicthegathering.utils.CardRow
 import com.example.magicthegathering.utils.Constants
+import com.example.magicthegathering.utils.RowType
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.util.ArrayList
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), CardOnClickListener{
 
-    private lateinit var homeAdapter: HomeAdapter
+    private lateinit var cardAdapter: CardAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var homeViewModel: HomeViewModel
     private var cardArrayList = ArrayList<Card>()
     private val constants =  Constants()
+    private var isLoading = false
+    private var countPage = 1
+    private var lastPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +46,6 @@ class HomeFragment : Fragment(), CardOnClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupViews(progressBar = true, titleSet = false)
         initViewModel()
         observerViewModel()
     }
@@ -48,8 +54,9 @@ class HomeFragment : Fragment(), CardOnClickListener{
         homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 cardArrayList = it as ArrayList<Card>
-                setupViews(progressBar = false, titleSet = true)
-                loadRecyclerView(it)
+                val cardList = homeViewModel.sortCards(cardArrayList)
+                progressBar(false)
+                loadRecyclerView(cardList)
             }
         })
     }
@@ -61,17 +68,36 @@ class HomeFragment : Fragment(), CardOnClickListener{
         homeViewModel.getCards()
     }
 
-    private fun setupViews(progressBar: Boolean, titleSet: Boolean) {
-        progressBar(progressBar)
-        titleSet(titleSet)
-    }
-
-    private fun loadRecyclerView(it: MutableList<Card>) {
+    private fun loadRecyclerView(it: ArrayList<CardRow>) {
         gridLayoutManager = GridLayoutManager(this.context, 3)
-        homeAdapter = HomeAdapter(it, this@HomeFragment)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (cardAdapter.getItemViewType(position)) {
+                    RowType.CARD.ordinal -> 1
+                    else -> gridLayoutManager.spanCount
+                }
+            }
+        }
+        cardAdapter = CardAdapter(it)
         rv_home.apply {
             layoutManager = gridLayoutManager
-            adapter = homeAdapter
+            adapter = cardAdapter
+
+//            addOnScrollListener(object: RecyclerView.OnScrollListener(){
+//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                    super.onScrollStateChanged(recyclerView, newState)
+//                    val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
+//                    val lastCompleteItem = gridLayoutManager.findLastCompletelyVisibleItemPosition()
+//                    if (!isLoading) {
+//                        if (lastCompleteItem == cardArrayList.size - 1) {
+//                            countPage += 1
+//                            isLoading = true
+//                            lastPosition = cardArrayList.size + 1
+//                            homeViewModel.getCards()
+//                        }
+//                    }
+//                }
+//            })
         }
     }
 
@@ -83,14 +109,14 @@ class HomeFragment : Fragment(), CardOnClickListener{
         }
     }
 
-    private fun titleSet(status: Boolean){
-        if (status) {
-            tv_name_set_frag.visibility = View.VISIBLE
-            tv_name_set_frag.text = cardArrayList.get(0).setName
-        }else {
-            tv_name_set_frag.visibility = View.INVISIBLE
-        }
-    }
+//    private fun titleSet(status: Boolean){
+//        if (status) {
+//            tv_name_set_frag.visibility = View.VISIBLE
+//            tv_name_set_frag.text = cardArrayList.get(0).setName
+//        }else {
+//            tv_name_set_frag.visibility = View.INVISIBLE
+//        }
+//    }
 
     override fun onClick(position: Int) {
         val intent = Intent(this.context, DetailActivity::class.java)

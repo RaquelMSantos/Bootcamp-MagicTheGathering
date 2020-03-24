@@ -2,6 +2,7 @@ package com.example.magicthegathering.repository.remote
 
 import android.util.Log
 import com.example.magicthegathering.network.Output
+import okhttp3.Headers
 import retrofit2.Response
 import java.io.IOException
 
@@ -19,7 +20,7 @@ open class BaseRepository {
     }
 
     //TODO - handle the error case
-    suspend fun safeApiCallHeader(call: suspend() -> String, error: String): String {
+    suspend fun safeApiCallHeader(call: suspend() -> Headers, error: String): Headers {
         return call.invoke()
     }
 
