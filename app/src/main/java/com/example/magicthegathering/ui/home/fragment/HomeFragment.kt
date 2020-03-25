@@ -15,7 +15,6 @@ import com.example.magicthegathering.R
 import com.example.magicthegathering.network.models.Card
 import com.example.magicthegathering.ui.details.activity.DetailActivity
 import com.example.magicthegathering.ui.home.adapter.CardAdapter
-import com.example.magicthegathering.ui.home.adapter.HomeAdapter
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModel
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModelFactory
 import com.example.magicthegathering.utils.CardOnClickListener
@@ -30,10 +29,10 @@ class HomeFragment : Fragment(), CardOnClickListener{
     private lateinit var cardAdapter: CardAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var homeViewModel: HomeViewModel
-    private var cardArrayList = ArrayList<Card>()
+    private var cardListRow = ArrayList<CardRow>()
     private val constants =  Constants()
     private var isLoading = false
-    private var countPage = 1
+    private var countPage = 0
     private var lastPosition = 0
 
     override fun onCreateView(
@@ -45,7 +44,6 @@ class HomeFragment : Fragment(), CardOnClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initViewModel()
         observerViewModel()
     }
@@ -53,22 +51,32 @@ class HomeFragment : Fragment(), CardOnClickListener{
     private fun observerViewModel (){
         homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                cardArrayList = it as ArrayList<Card>
-                val cardList = homeViewModel.sortCards(cardArrayList)
+                cardListRow = homeViewModel.sortCards(it as ArrayList<Card>)
                 progressBar(false)
-                loadRecyclerView(cardList)
+                loadRecyclerView()
+                updateList(lastPosition)
             }
         })
+    }
+
+    private fun updateList(lastPosition: Int) {
+        if (countPage > 0){
+            rv_home.adapter?.notifyItemRangeInserted(lastPosition, cardListRow.size)
+        }else {
+            rv_home.adapter?.notifyDataSetChanged()
+        }
+        isLoading = false
     }
 
     private fun initViewModel() {
         val viewModelFactory = HomeViewModelFactory()
         homeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(HomeViewModel::class.java)
-        homeViewModel.getCards()
+        homeViewModel.getCards(countPage)
+
     }
 
-    private fun loadRecyclerView(it: ArrayList<CardRow>) {
+    private fun loadRecyclerView() {
         gridLayoutManager = GridLayoutManager(this.context, 3)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -78,26 +86,27 @@ class HomeFragment : Fragment(), CardOnClickListener{
                 }
             }
         }
-        cardAdapter = CardAdapter(it)
+        cardAdapter = CardAdapter(cardListRow, this@HomeFragment)
         rv_home.apply {
             layoutManager = gridLayoutManager
             adapter = cardAdapter
 
-//            addOnScrollListener(object: RecyclerView.OnScrollListener(){
-//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                    super.onScrollStateChanged(recyclerView, newState)
-//                    val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-//                    val lastCompleteItem = gridLayoutManager.findLastCompletelyVisibleItemPosition()
-//                    if (!isLoading) {
-//                        if (lastCompleteItem == cardArrayList.size - 1) {
-//                            countPage += 1
-//                            isLoading = true
-//                            lastPosition = cardArrayList.size + 1
-//                            homeViewModel.getCards()
-//                        }
-//                    }
-//                }
-//            })
+            addOnScrollListener(object: RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
+                    val lastCompleteItem = gridLayoutManager.findLastCompletelyVisibleItemPosition()
+                    if (!isLoading) {
+                        if (lastCompleteItem == cardListRow.size -1) {
+                            countPage += 1
+                            isLoading = true
+                            lastPosition = cardListRow.size
+                            progressBar(true)
+                            homeViewModel.getCards(countPage)
+                        }
+                    }
+                }
+            })
         }
     }
 
@@ -109,20 +118,11 @@ class HomeFragment : Fragment(), CardOnClickListener{
         }
     }
 
-//    private fun titleSet(status: Boolean){
-//        if (status) {
-//            tv_name_set_frag.visibility = View.VISIBLE
-//            tv_name_set_frag.text = cardArrayList.get(0).setName
-//        }else {
-//            tv_name_set_frag.visibility = View.INVISIBLE
-//        }
-//    }
-
     override fun onClick(position: Int) {
         val intent = Intent(this.context, DetailActivity::class.java)
-        val card = cardArrayList[position]
-        var imageUrl = card.imageUrl
-        intent.putExtra(constants.nameCard, card.name)
+        val card = cardListRow[position]
+        var imageUrl = card.card?.imageUrl
+        intent.putExtra(constants.nameCard, card.card?.name)
         if (imageUrl.isNullOrBlank()) {
            imageUrl = ""
         }

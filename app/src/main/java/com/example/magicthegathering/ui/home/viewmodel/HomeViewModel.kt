@@ -20,17 +20,16 @@ class HomeViewModel: ViewModel() {
     private val scope = CoroutineScope(coroutineContext)
     private val cardRepository: CardRepository = CardRepository(RetrofitService.createService(MagicApi::class.java))
     private var cardList = ArrayList<Card>()
-    private var countPage = 0
 
     val homeLiveData = MutableLiveData<MutableList<Card>>()
-    fun getCards() {
+    fun getCards(countPage: Int) {
         scope.launch {
                 val sets = cardRepository.getSets()?.sortedByDescending { it.releaseDate }
-                val header = cardRepository.getHeader(sets?.get(countPage)?.code.toString(), 1)
+                val header = cardRepository.getHeader(sets?.get(countPage)?.code.toString(), countPage)
                 val totalPage = calculateTotalPage(header)
 
-                for (page in 0 until totalPage+1) {
-                    val response = cardRepository.getCards(sets?.get(0)?.code.toString(), page)
+                for (page in 1 until totalPage+1) {
+                    val response = cardRepository.getCards(sets?.get(countPage)?.code.toString(), page)
                     cardList.addAll(response!!)
                 }
                 cardList.sortBy { it.name }
