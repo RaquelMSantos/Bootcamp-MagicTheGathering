@@ -1,6 +1,5 @@
 package com.example.magicthegathering.utils
 
-import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController

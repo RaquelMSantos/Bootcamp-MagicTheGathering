@@ -15,13 +15,18 @@
         android:layout_weight="1"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:navGraph="@navigation/nav_graph"
-        app:defaultNavHost="true"
-        tools:ignore="Suspicious0dp" />
+        app:defaultNavHost="true" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:labelVisibilityMode="labeled"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
+        android:theme="@style/Widget.Design.BottomNavigationView"
+        app:itemTextAppearanceActive="@style/navTextActive"
+        app:itemTextAppearanceInactive="@style/navTextInactive"
         app:menu="@menu/menu_bottom_navigation"/>
 
 </LinearLayout>

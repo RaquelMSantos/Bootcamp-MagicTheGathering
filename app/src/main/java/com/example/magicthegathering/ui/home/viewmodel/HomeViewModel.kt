@@ -27,6 +27,7 @@ class HomeViewModel: ViewModel() {
                 val sets = cardRepository.getSets()?.sortedByDescending { it.releaseDate }
                 val header = cardRepository.getHeader(sets?.get(countPage)?.code.toString(), countPage)
                 val totalPage = calculateTotalPage(header)
+                cardList.clear()
 
                 for (page in 1 until totalPage+1) {
                     val response = cardRepository.getCards(sets?.get(countPage)?.code.toString(), page)

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.details.activity.DetailActivity"
-    android:background="@drawable/fundo">
+    android:background="@color/background">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@color/white"
             android:layout_gravity="left"
             android:id="@+id/toolbar_image" />
 
@@ -27,9 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:textColor="@android:color/white"
+        android:textColor="@color/white"
         android:layout_below="@id/toolbar"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:layout_centerHorizontal="true"/>
 
     <ImageView
@@ -38,5 +39,17 @@
         android:layout_height="264dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
+
+    <Button
+        android:id="@+id/btn_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@drawable/buttom_fav"
+        android:textSize="24sp"
+        android:text="@string/btn_favor"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"/>
 
 </RelativeLayout>
