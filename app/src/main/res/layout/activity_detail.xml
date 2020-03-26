@@ -10,13 +10,13 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:elevation="4dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/close"
             android:tint="@color/white"
             android:layout_gravity="left"
             android:id="@+id/toolbar_image" />
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:layout_below="@id/toolbar"
         android:textSize="24sp"
         android:layout_centerHorizontal="true"/>
@@ -37,6 +38,7 @@
         android:id="@+id/img_card_detail"
         android:layout_width="190dp"
         android:layout_height="264dp"
+        android:background="@drawable/corner_image"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
