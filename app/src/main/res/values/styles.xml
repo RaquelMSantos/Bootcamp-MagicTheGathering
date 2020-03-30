@@ -16,5 +16,15 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
+    <style name="navTextInactive">
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemIconTint">@color/white</item>
+    </style>
+
+    <style name="navTextActive">
+        <item name="itemTextColor">@color/colorPrimary</item>
+        <item name="itemIconTint">@color/colorPrimary</item>
+    </style>
+
 
 </resources>

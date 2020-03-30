@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layout="@layout/fragment_home"
-    android:background="@drawable/fundo"
+    android:background="@color/background"
     android:paddingTop="10dp"
     tools:context=".ui.home.fragment.HomeFragment">
 
@@ -14,16 +14,23 @@
         android:layout_height="match_parent">
 
     <ProgressBar
-        android:id="@+id/pb_home"
+        android:id="@+id/pb_home_init"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:visibility="visible"/>
 
+    <ProgressBar
+        android:id="@+id/pb_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_home"
-        android:layout_margin="10dp"
         android:layout_above="@id/pb_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

@@ -33,14 +33,22 @@ class CardAdapter (private var cardList: ArrayList<CardRow>, private val onClick
         val cardRow: CardRow = cardList[position]
         if (cardRow.type == RowType.CARD) {
             val card = cardRow.card
+            if (card?.imageUrl.equals("")) {
+                card?.imageUrl = null.toString()
+            }
             Picasso.get()
                 .load(card?.imageUrl)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.placeholder)
                 .into(holder.getImage(R.id.img_card))
 
             holder.itemView.setOnClickListener { onClick.onClick(position) }
         }else {
             cardRow.header?.let { holder.setText(R.id.tv_name_set, it) }
         }
+    }
+
+    internal fun setCards(cards: ArrayList<CardRow>){
+        this.cardList = cards
+        notifyDataSetChanged()
     }
 }
