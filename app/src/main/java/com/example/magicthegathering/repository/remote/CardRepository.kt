@@ -3,6 +3,7 @@ package com.example.magicthegathering.repository.remote
 import com.example.magicthegathering.network.MagicApi
 import com.example.magicthegathering.network.models.Card
 import com.example.magicthegathering.network.models.SetModel
+import okhttp3.Headers
 
 class CardRepository (private val magicApi: MagicApi): BaseRepository() {
 
@@ -20,10 +21,18 @@ class CardRepository (private val magicApi: MagicApi): BaseRepository() {
         )?.listSetModels?.toMutableList()
     }
 
-    suspend fun getHeader(set: String, page: Int): String {
+    suspend fun getHeader(set: String, page: Int): Headers {
         return safeApiCallHeader(
-            call = { magicApi.getCardsAsync(set, page).await().headers()["total-count"].toString() },
+            call = { magicApi.getCardsAsync(set, page).await().headers() },
             error = "Error header"
         )
     }
+
+//    suspend fun getHeader(set: String, page: Int): String {
+//        return safeApiCallHeader(
+//            call = { magicApi.getCardsAsync(set, page).await().headers()["total-count"].toString() },
+//            error = "Error header"
+//        )
+//    }
+
 }
