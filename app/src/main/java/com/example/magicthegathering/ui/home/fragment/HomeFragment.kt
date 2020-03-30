@@ -47,9 +47,9 @@ class HomeFragment : Fragment(), CardOnClickListener{
     private fun observerViewModel (){
         homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                setupViews(progressBar = false, titleSet = true)
                 cardArrayList = it as ArrayList<Card>
-                loadRecyclerView(cardArrayList)
+                setupViews(progressBar = false, titleSet = true)
+                loadRecyclerView(it)
             }
         })
     }
