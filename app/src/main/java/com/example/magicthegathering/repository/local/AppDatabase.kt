@@ -9,7 +9,7 @@ import com.example.magicthegathering.network.models.Card
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(Card::class), version = 1)
+@Database(entities = [Card::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun cardDao(): CardDao
 

@@ -12,7 +12,7 @@ import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import com.example.magicthegathering.R
-import com.example.magicthegathering.utils.MainActivity
+import com.example.magicthegathering.ui.main.MainActivity
 
 class detailArrange(action: detailArrange.() -> Unit) {
     init {

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.magicthegathering.R
 import com.example.magicthegathering.network.models.Card
 import com.example.magicthegathering.ui.details.activity.DetailActivity
-import com.example.magicthegathering.ui.home.adapter.CardAdapter
+import com.example.magicthegathering.ui.adapter.CardAdapter
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModel
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModelFactory
 import com.example.magicthegathering.utils.CardOnClickListener

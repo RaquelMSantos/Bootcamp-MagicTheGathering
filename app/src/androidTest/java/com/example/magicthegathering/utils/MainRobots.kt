@@ -2,15 +2,13 @@
 
 package com.example.magicthegathering.utils
 
-import android.app.Activity
-import android.app.Instrumentation
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import com.example.magicthegathering.R
+import com.example.magicthegathering.ui.main.MainActivity
 
 class mainArrange(action: mainArrange.() -> Unit) {
     init {

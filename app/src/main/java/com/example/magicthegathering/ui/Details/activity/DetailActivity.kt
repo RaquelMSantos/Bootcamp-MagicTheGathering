@@ -3,17 +3,13 @@ package com.example.magicthegathering.ui.details.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.magicthegathering.R
 import com.example.magicthegathering.network.models.Card
-import com.example.magicthegathering.repository.local.AppDatabase
-import com.example.magicthegathering.repository.local.CardDao
 import com.example.magicthegathering.ui.favorites.fragment.viewmodel.FavoritesViewModel
 import com.example.magicthegathering.utils.Constants
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
-import org.jetbrains.anko.doAsync
 
 class DetailActivity : AppCompatActivity() {
 

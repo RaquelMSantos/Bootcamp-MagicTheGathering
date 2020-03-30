@@ -1,6 +1,5 @@
 package com.example.magicthegathering.network.models
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

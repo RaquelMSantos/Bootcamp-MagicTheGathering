@@ -1,9 +1,8 @@
-package com.example.magicthegathering.ui.home.adapter
+package com.example.magicthegathering.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.magicthegathering.R
 import com.example.magicthegathering.utils.CardOnClickListener
