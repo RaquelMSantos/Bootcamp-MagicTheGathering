@@ -11,27 +11,29 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.magicthegathering.R
+import com.example.magicthegathering.network.MagicApi
+import com.example.magicthegathering.network.RetrofitService
 import com.example.magicthegathering.network.models.Card
+import com.example.magicthegathering.repository.remote.CardDatasource
+import com.example.magicthegathering.repository.remote.GetCardsUseCase
 import com.example.magicthegathering.ui.details.activity.DetailActivity
 import com.example.magicthegathering.ui.adapter.CardAdapter
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModel
 import com.example.magicthegathering.ui.home.viewmodel.HomeViewModelFactory
-import com.example.magicthegathering.utils.CardOnClickListener
-import com.example.magicthegathering.utils.CardRow
-import com.example.magicthegathering.utils.Constants
-import com.example.magicthegathering.utils.RowType
+import com.example.magicthegathering.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.Dispatchers
 
 class HomeFragment : Fragment(), CardOnClickListener{
 
     private var cardAdapter: CardAdapter? = null
     private var gridLayoutManager: GridLayoutManager? = null
-    private lateinit var homeViewModel: HomeViewModel
     private var cardListRow = ArrayList<CardRow>()
     private val constants =  Constants()
     private var isLoading = false
     private var countPage = 0
     private var lastPosition = 0
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,20 +48,25 @@ class HomeFragment : Fragment(), CardOnClickListener{
         observerViewModel()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        homeViewModel.cancelRequest()
-    }
-
     private fun observerViewModel (){
-            homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer {
-                if (it != null) {
-                    loadRecyclerView()
-                    val newCardList = homeViewModel.sortCards(it as ArrayList<Card>)
-                    lastPosition = cardListRow.size + 1
-                    cardListRow.addAll(newCardList)
-                    updateList(lastPosition)
-                    progressBar(false)
+            homeViewModel.homeLiveData.observe(viewLifecycleOwner, Observer<LiveDataResult<MutableList<Card>>>{
+                when (it?.status) {
+                    LiveDataResult.STATUS.ERROR -> {
+
+                    }
+
+                    LiveDataResult.STATUS.SUCCESS -> {
+                        loadRecyclerView()
+                        val newCardList = homeViewModel.sortCards(it.data as ArrayList<Card>)
+                        lastPosition = cardListRow.size + 1
+                        cardListRow.addAll(newCardList)
+                        updateList(lastPosition)
+                        progressBar(false)
+                    }
+
+                    LiveDataResult.STATUS.LOADING -> {
+//                        progressBar(true)
+                    }
                 }
             })
     }
@@ -74,12 +81,16 @@ class HomeFragment : Fragment(), CardOnClickListener{
     }
 
     private fun initViewModel() {
-        val viewModelFactory = HomeViewModelFactory()
+        val viewModelFactory = HomeViewModelFactory(
+                Dispatchers.Main,
+                Dispatchers.IO,
+                GetCardsUseCase(CardDatasource(RetrofitService.createService((MagicApi::class.java))))
+        )
+
         homeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(HomeViewModel::class.java)
 
-            homeViewModel.getCards(countPage)
-
+        homeViewModel.getCards(countPage)
     }
 
     private fun loadRecyclerView() {
