@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.details.activity.DetailActivity"
+    android:background="@color/background">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="25dp"
+        android:elevation="4dp">
+
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/close"
+            android:tint="@color/white"
+            android:layout_gravity="left"
+            android:id="@+id/toolbar_image" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tv_name_set_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_below="@id/toolbar"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/img_card_detail"
+        android:layout_width="190dp"
+        android:layout_height="264dp"
+        android:background="@drawable/corner_image"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:id="@+id/btn_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@drawable/buttom_fav"
+        android:textSize="24sp"
+        android:text="@string/btn_favor"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"/>
+
+</RelativeLayout>

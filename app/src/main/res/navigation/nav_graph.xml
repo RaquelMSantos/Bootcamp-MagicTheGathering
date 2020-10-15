@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@id/home_bottom">
+
+    <fragment android:id="@+id/home_bottom"
+        android:name="com.example.magicthegathering.ui.home.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_bottom_home_to_detailsActivity"
+            app:destination="@+id/detailsActivity"/>
+        <argument
+            android:name="data"
+            app:argType="string"/>
+    </fragment>
+
+    <fragment android:id="@+id/favorites_bottom"
+        android:name="com.example.magicthegathering.ui.favorites.fragment.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_bottom_favorites_to_detailsActivity"
+            app:destination="@+id/detailsActivity"/>
+        <argument
+            android:name="data"
+            app:argType="string"/>
+    </fragment>
+
+    <activity
+        android:id="@+id/detailsActivity"
+        android:name="com.example.magicthegathering.ui.details.activity.DetailActivity"
+        android:label="activity_details"
+        tools:layout="@layout/activity_detail"/>
+</navigation>
